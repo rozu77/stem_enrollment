@@ -1,0 +1,16 @@
+{% extends "stem/base.html" %}
+    {% load crispy_forms_tags %} {% load static %} {% block content %}
+    <form method="POST">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <div class="img-log">
+            <!--<img src="{% static 'd_network/img/copypasta1.png' %}" alt="">-->
+            <h3>Login</h3>
+        </div>
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Login</button>
+      </div>
+    </form>
+    {% endblock %}

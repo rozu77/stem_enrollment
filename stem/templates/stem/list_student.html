@@ -1,0 +1,105 @@
+{% extends "stem/base.html" %}
+    {% load crispy_forms_tags %}{% load widget_tweaks %} {% load static %} {% block content %}
+    <div class="manage-container">
+        <h4>Filter:</h4>
+        <form method="get" class="form-filter">
+        <div class="row">
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.lrn.label_tag }}
+                    {% render_field filter.form.lrn class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.last_name.label_tag }}
+                    {% render_field filter.form.last_name class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.first_name.label_tag }}
+                    {% render_field filter.form.first_name class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.track.label_tag }}
+                    {% render_field filter.form.track class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.strand.label_tag }}
+                    {% render_field filter.form.strand class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.grade_level_to_enroll.label_tag }}
+                    {% render_field filter.form.grade_level_to_enroll class="form-control" %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.sex.label_tag }}
+                    {% render_field filter.form.sex class="form-control" %}
+                </div>
+            </div>
+        <div class="frm-btn">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    <h4 class="mt-4">List of students</h4>
+    <div class="table-responsive mt-2">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+            <th scope="col">LRN</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Track</th>
+            <th scope="col">Strand</th>
+            <th scope="col">Grade Level Enrol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <th scope="row"><a href="{% url 'stem:student-details' student.id %}">{{ student.lrn }}</a></th>
+                <td>{{ student.last_name }}, {{ student.first_name }} {{ student.middle_name }}</td>
+                <td>{{ student.track }}</td>
+                <td>{{ student.strand }}</td>
+                <td>{{ student.grade_level_to_enroll }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <div class="page">
+            {% if is_paginated %}
+
+            {% if page_obj.has_previous %}
+                <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+                <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+
+            {% endif %}
+        </div>    
+    </div>
+    </div>
+    </div>
+    {% endblock %}
